@@ -1,0 +1,9 @@
+{
+  "extends": [
+    "4catalyzer",
+    "prettier"
+  ],
+  "plugins": [
+    "prettier"
+  ]
+}
