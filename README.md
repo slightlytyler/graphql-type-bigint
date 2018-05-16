@@ -1,20 +1,40 @@
-# graphql-type-json [![Travis][build-badge]][build] [![npm][npm-badge]][npm]
+# GraphQL Bigint
 
-JSON scalar type for [GraphQL.js](https://github.com/graphql/graphql-js).
+### A long integer type for [graphql-js](https://github.com/graphql/graphql-js). This implementation gives you 53 bits rather than the default 32-bit `GraphQLInt`.
 
-[![Codecov][codecov-badge]][codecov]
+## The problem
+
+The [GraphQL spec](https://facebook.github.io/graphql/#sec-Int) limits its `Int` type to 32-bits. Maybe you've seen this error before:
+
+```
+GraphQLError: Argument "num" has invalid value 9007199254740990.
+              Expected type "Int", found 9007199254740990.
+```
+
+Why? 64-bits would be too large for JavaScript's 53-bit limit.
+According to Lee Byron, a 52-bit integer spec would have been "too weird" [see this issue](https://github.com/graphql/graphql-js/issues/292).
+The spec therefore has 32-bit integers to ensure portability to languages that can't represent 64-bit integers.
+However, if you don't care about that, and you just want to use JavaScript's _special_ 53-bit integers, you can use this scalar type instead!
 
 ## Usage
 
-```js
-import GraphQLJSON from 'graphql-type-json';
+```shell
+$ npm install graphql-type-bigint
 ```
 
-[build-badge]: https://img.shields.io/travis/taion/graphql-type-json/master.svg
-[build]: https://travis-ci.org/taion/graphql-type-json
+Use it the same as any other scalar type, either input or output.
 
-[npm-badge]: https://img.shields.io/npm/v/graphql-type-json.svg
-[npm]: https://www.npmjs.com/package/graphql-type-json
+```js
+const Bigint = require('graphql-type-bigint');
 
-[codecov-badge]: https://img.shields.io/codecov/c/github/taion/graphql-type-json/master.svg
-[codecov]: https://codecov.io/gh/taion/graphql-type-json
+const SomeType = new GraphQLObjectType({
+  name: 'SomeType',
+  fields: {
+    numberField: {
+      type: Bigint,
+      // this would throw an error with the GraphQLInt
+      resolve: () => Number.MAX_SAFE_INTEGER,
+    },
+  },
+});
+```
