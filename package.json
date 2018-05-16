@@ -1,10 +1,8 @@
 {
-  "name": "graphql-type-json",
+  "name": "graphql-type-bigint",
   "version": "0.2.1",
-  "description": "JSON scalar type for GraphQL.js",
-  "files": [
-    "lib"
-  ],
+  "description": "Bigint scalar type for GraphQL.js",
+  "files": ["lib"],
   "main": "lib/index.js",
   "scripts": {
     "build": "rimraf lib && babel src -d lib",
@@ -15,10 +13,7 @@
     "testonly": "jest --runInBand --verbose"
   },
   "lint-staged": {
-    "*.js": [
-      "eslint --fix",
-      "git add"
-    ]
+    "*.js": ["eslint --fix", "git add"]
   },
   "prettier": {
     "printWidth": 79,
@@ -26,24 +21,19 @@
     "trailingComma": "all"
   },
   "jest": {
-    "collectCoverageFrom": [
-      "src/**"
-    ],
+    "collectCoverageFrom": ["src/**"],
     "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/taion/graphql-type-json.git"
+    "url": "git+https://github.com/slightlytyler/graphql-type-bigint.git"
   },
-  "keywords": [
-    "graphql"
-  ],
-  "author": "Jimmy Jia",
+  "keywords": ["graphql"],
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/taion/graphql-type-json/issues"
+    "url": "https://github.com/slightlytyler/graphql-type-bigint/issues"
   },
-  "homepage": "https://github.com/taion/graphql-type-json#readme",
+  "homepage": "https://github.com/slightlytyler/graphql-type-bigint#readme",
   "peerDependencies": {
     "graphql": ">=0.8.0"
   },
