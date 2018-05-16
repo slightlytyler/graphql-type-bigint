@@ -1,46 +1,48 @@
 import { GraphQLScalarType } from 'graphql';
-import { Kind } from 'graphql/language';
+import { INT } from 'graphql/language/kinds';
 
-function identity(value) {
-  return value;
-}
+const MAX_INT = Number.MAX_SAFE_INTEGER;
+const MIN_INT = Number.MIN_SAFE_INTEGER;
 
-function parseLiteral(ast, variables) {
-  switch (ast.kind) {
-    case Kind.STRING:
-    case Kind.BOOLEAN:
-      return ast.value;
-    case Kind.INT:
-    case Kind.FLOAT:
-      return parseFloat(ast.value);
-    case Kind.OBJECT: {
-      const value = Object.create(null);
-      ast.fields.forEach(field => {
-        value[field.name.value] = parseLiteral(field.value, variables);
-      });
-
-      return value;
-    }
-    case Kind.LIST:
-      return ast.values.map(n => parseLiteral(n, variables));
-    case Kind.NULL:
-      return null;
-    case Kind.VARIABLE: {
-      const name = ast.name.value;
-      return variables ? variables[name] : undefined;
-    }
-    default:
-      return undefined;
+const coerceBigint = value => {
+  if (value === '') {
+    throw new TypeError(
+      'Bigint cannot represent non 53-bit signed integer value: (empty string)',
+    );
   }
-}
+  const num = Number(value);
+  if (num > MAX_INT || num < MIN_INT) {
+    throw new TypeError(
+      `Bigint cannot represent non 53-bit signed integer value: ${String(
+        value,
+      )}`,
+    );
+  }
+  const int = Math.floor(num);
+  if (int !== num) {
+    throw new TypeError(
+      `Bigint cannot represent non-integer value: ${String(value)}`,
+    );
+  }
+  return int;
+};
 
-export default new GraphQLScalarType({
-  name: 'JSON',
+const GraphQLBigint = new GraphQLScalarType({
+  name: 'Bigint',
   description:
-    'The `JSON` scalar type represents JSON values as specified by ' +
-    '[ECMA-404](http://www.ecma-international.org/' +
-    'publications/files/ECMA-ST/ECMA-404.pdf).',
-  serialize: identity,
-  parseValue: identity,
-  parseLiteral,
+    'The `Bigint` scalar type represents non-fractional signed whole numeric ' +
+    'values. Bigint can represent values between -(2^53) + 1 and 2^53 - 1. ',
+  serialize: coerceBigint,
+  parseValue: coerceBigint,
+  parseLiteral(ast) {
+    if (ast.kind === INT) {
+      const num = parseInt(ast.value, 10);
+      if (num <= MAX_INT && num >= MIN_INT) {
+        return num;
+      }
+    }
+    return null;
+  },
 });
+
+export default GraphQLBigint;
