@@ -1,5 +1,7 @@
 import { GraphQLScalarType } from 'graphql';
-import { INT } from 'graphql/language/kinds';
+import { Kind } from 'graphql/language';
+
+const { INT } = Kind;
 
 const MAX_INT = Number.MAX_SAFE_INTEGER;
 const MIN_INT = Number.MIN_SAFE_INTEGER;

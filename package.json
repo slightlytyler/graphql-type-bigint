@@ -1,8 +1,10 @@
 {
   "name": "graphql-type-bigint",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Bigint scalar type for GraphQL.js",
-  "files": ["lib"],
+  "files": [
+    "lib"
+  ],
   "main": "lib/index.js",
   "scripts": {
     "build": "rimraf lib && babel src -d lib",
@@ -13,7 +15,10 @@
     "testonly": "jest --runInBand --verbose"
   },
   "lint-staged": {
-    "*.js": ["eslint --fix", "git add"]
+    "*.js": [
+      "eslint --fix",
+      "git add"
+    ]
   },
   "prettier": {
     "printWidth": 79,
@@ -21,14 +26,18 @@
     "trailingComma": "all"
   },
   "jest": {
-    "collectCoverageFrom": ["src/**"],
+    "collectCoverageFrom": [
+      "src/**"
+    ],
     "testEnvironment": "node"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/slightlytyler/graphql-type-bigint.git"
   },
-  "keywords": ["graphql"],
+  "keywords": [
+    "graphql"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/slightlytyler/graphql-type-bigint/issues"
